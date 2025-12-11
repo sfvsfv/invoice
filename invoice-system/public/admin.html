@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <title>发票申请后台</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<!-- 编辑弹窗 -->
+<div id="editModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>编辑发票记录</h3>
+
+        <input id="edit_company" class="input" placeholder="公司名">
+        <input id="edit_credit" class="input" placeholder="信用代码">
+        <input id="edit_item" class="input" placeholder="开票项目">
+        <input id="edit_invoiceEmail" class="input" placeholder="收票邮箱">
+        <input id="edit_payEmail" class="input" placeholder="购买邮箱">
+        <input id="edit_amount" class="input" placeholder="金额">
+        <input id="edit_remark" class="input" placeholder="备注">
+
+        <button class="btn" onclick="saveRecord()">保存修改</button>
+        <button class="btn btn-del" onclick="closeModal()">关闭</button>
+    </div>
+</div>
+
+<style>
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.modal-content input {
+    margin-bottom: 10px;
+}
+</style>
+
+
+<body class="admin-body">
+
+<div class="admin-container">
+    <h2 class="admin-title">发票申请记录</h2>
+
+    <!-- 开票项目管理 -->
+    <div class="admin-card">
+        <h3>开票项目管理</h3>
+
+        <div style="display:flex;gap:10px;margin-bottom:14px;">
+            <input id="newProject" class="input" placeholder="新增开票项目" />
+            <button class="btn" onclick="addProject()">新增</button>
+        </div>
+
+        <ul id="projectList"></ul>
+    </div>
+
+    <!-- 发票记录表格 -->
+    <div class="admin-card">
+        <h3>发票申请记录列表</h3>
+        <div class="table-wrapper">
+            <table class="nice-table">
+                <thead>
+                    <tr>
+                        <th>公司名</th>
+                        <th>信用代码</th>
+                        <th>开票项目</th>
+                        <th>收票邮箱</th>
+                        <th>购买邮箱</th>
+                        <th>金额</th>
+                        <th>备注</th>
+                        <th>提交时间</th>
+                    </tr>
+                </thead>
+                <tbody id="list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let editingRecord = null;
+
+function editRecord(row) {
+    editingRecord = row;
+
+    document.getElementById("edit_company").value = row.companyName;
+    document.getElementById("edit_credit").value = row.creditCode;
+    document.getElementById("edit_item").value = row.invoiceItem;
+    document.getElementById("edit_invoiceEmail").value = row.invoiceEmail;
+    document.getElementById("edit_payEmail").value = row.payEmail;
+    document.getElementById("edit_amount").value = row.amount;
+    document.getElementById("edit_remark").value = row.remark;
+
+    document.getElementById("editModal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
+async function saveRecord() {
+    editingRecord.companyName = document.getElementById("edit_company").value;
+    editingRecord.creditCode = document.getElementById("edit_credit").value;
+    editingRecord.invoiceItem = document.getElementById("edit_item").value;
+    editingRecord.invoiceEmail = document.getElementById("edit_invoiceEmail").value;
+    editingRecord.payEmail = document.getElementById("edit_payEmail").value;
+    editingRecord.amount = document.getElementById("edit_amount").value;
+    editingRecord.remark = document.getElementById("edit_remark").value;
+
+    await fetch("/api/update-record", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+        },
+        body: JSON.stringify(editingRecord)
+    });
+
+    closeModal();
+    loadRecords();
+}
+
+async function deleteRecord(id) {
+    if (!confirm("确定要删除此记录吗？")) return;
+
+    await fetch("/api/delete-record", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+        },
+        body: JSON.stringify({ id })
+    });
+
+    loadRecords();
+}
+
+const token = localStorage.getItem("adminToken");
+
+/* ============ 检查是否登录 ============ */
+async function checkAuth() {
+    const res = await fetch("/api/check-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+    });
+
+    const data = await res.json();
+    if (!data.valid) {
+        location.href = "/admin-login.html";
+    }
+}
+
+/* ============ 加载开票项目 ============ */
+async function loadProjects() {
+    const res = await fetch("/api/projects", {
+        headers: { "Authorization": token }
+    });
+    const list = await res.json();
+
+    document.getElementById("projectList").innerHTML = list
+        .map(item => `
+            <li>
+                ${item}
+                <button class="btn btn-del" onclick="deleteProject('${item}')">删除</button>
+            </li>
+        `)
+        .join("");
+}
+
+/* ============ 新增项目 ============ */
+async function addProject() {
+    const name = document.getElementById("newProject").value.trim();
+    if (!name) return;
+
+    await fetch("/api/projects/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+        },
+        body: JSON.stringify({ name })
+    });
+
+    document.getElementById("newProject").value = "";
+    loadProjects();
+}
+
+/* ============ 删除项目 ============ */
+async function deleteProject(name) {
+    await fetch("/api/projects/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+        },
+        body: JSON.stringify({ name })
+    });
+
+    loadProjects();
+}
+
+/* ============ 加载发票记录 ============ */
+async function loadRecords() {
+    const res = await fetch("/api/list", {
+        headers: { "Authorization": token }
+    });
+    const data = await res.json();
+
+    document.getElementById("list").innerHTML =
+    data.map(row => `
+        <tr>
+            <td>${row.companyName}</td>
+            <td>${row.creditCode}</td>
+            <td>${row.invoiceItem}</td>
+            <td>${row.invoiceEmail}</td>
+            <td>${row.payEmail}</td>
+            <td>${row.amount}</td>
+            <td>${row.remark || ""}</td>
+            <td>${formatDate(row.createdAt)}</td>
+
+            <td>
+                <button class="btn" onclick='editRecord(${JSON.stringify(row)})'>编辑</button>
+                <button class="btn btn-del" onclick='deleteRecord(${row.id})'>删除</button>
+            </td>
+        </tr>
+    `).join("");
+
+}
+
+function formatDate(t) {
+    const d = new Date(t);
+    const pad = n => (n < 10 ? "0" + n : n);
+    return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
+/* ============ 初始化 ============ */
+(async function init() {
+    await checkAuth();
+    await loadProjects();
+    await loadRecords();
+})();
+</script>
+
+</body>
+</html>

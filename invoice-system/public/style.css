@@ -1,0 +1,399 @@
+/* =========================
+   通用样式（前台页面）
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f3f4f6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
+    color: #111827;
+}
+
+/* 发票申请页容器 */
+.container {
+    max-width: 640px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.container h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2563eb;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+label {
+    display: block;
+    margin-top: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* 提交按钮 */
+.submit-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 11px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.submit-btn:hover {
+    background: #1d4ed8;
+}
+
+.submit-btn:active {
+    transform: translateY(1px);
+}
+
+#result {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+/* 只读展示框（用于固定字段） */
+.readonly-box {
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    font-size: 14px;
+}
+
+
+
+/* =========================
+   后台通用样式
+========================= */
+
+.admin-body {
+    background: #f3f4f6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 28px 34px;
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+}
+
+.admin-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #2563eb;
+    margin: 0 0 22px 0;
+}
+
+/* 卡片块 */
+.admin-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    margin-bottom: 22px;
+}
+
+.admin-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    color: #111827;
+}
+
+/* 输入框 */
+.input {
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+/* 按钮 */
+.btn {
+    padding: 9px 14px;
+    background: #2563eb;
+    color: #ffffff;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.btn:hover {
+    background: #1d4ed8;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+/* 删除按钮 */
+.btn-del {
+    background: #ef4444;
+}
+
+.btn-del:hover {
+    background: #dc2626;
+}
+
+/* 登录提示 */
+.login-msg {
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+/* 项目列表 */
+#projectList {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0 0 0;
+}
+
+#projectList li {
+    margin: 8px 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 表格区域 */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 6px;
+}
+
+.nice-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+.nice-table thead {
+    background: #f1f5f9;
+}
+
+.nice-table th,
+.nice-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nice-table th {
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    white-space: nowrap;
+}
+
+.nice-table td {
+    color: #111827;
+    vertical-align: top;
+    word-break: break-word;
+}
+
+.nice-table tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+.col-time {
+    text-align: right;
+}
+
+.time-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* 登录页专用容器宽度稍小 */
+.login-container {
+    max-width: 420px;
+}
+
+
+/* 登录整体居中布局 */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px;
+}
+
+/* 登录卡片 */
+.login-box {
+    width: 520px;
+    background: white;
+    border-radius: 22px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+/* 标题 */
+.login-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+/* 内部区域 */
+.login-inner {
+    background: #ffffff;
+    padding: 32px 36px;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.05);
+}
+
+/* 输入框 */
+.login-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.login-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.15s ease;
+}
+
+.login-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+}
+
+/* 按钮 */
+.login-btn {
+    width: 100%;
+    margin-top: 22px;
+    padding: 13px 16px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.login-btn:hover {
+    background: #1d4ed8;
+}
+
+.login-btn:active {
+    transform: translateY(1px);
+}
+
+/* 错误提示 */
+.login-msg {
+    margin-top: 12px;
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* 弹窗遮罩层 */
+.modal {
+    position: fixed;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* 弹窗内容卡片 */
+.modal-content {
+    background: #ffffff;
+    padding: 28px 30px;
+    width: 320px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.modal-content h3 {
+    margin: 0 0 12px 0;
+    font-size: 20px;
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.modal-content p {
+    margin: 0;
+    font-size: 15px;
+    color: #4b5563;
+    line-height: 1.6;
+}
